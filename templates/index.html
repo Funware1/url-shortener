@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>URL Shortener</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="url"]:focus {
+            border-color: #667eea;
+        }
+
+        .shorten-btn {
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            background: #667eea;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .shorten-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            background: #f5f7ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result h3 {
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .url-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        #shortUrl {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .copy-btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #222;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.8;
+        }
+
+        .visit-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .visit-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 25px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            .shorten-btn {
+                width: 100%;
+            }
+
+            .url-container {
+                flex-direction: column;
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">🔗</div>
+
+        <h1>URL Shortener</h1>
+
+        <p class="description">
+            Turn long URLs into short, shareable links.
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="url"
+                name="url"
+                placeholder="Paste your long URL here..."
+                required
+            >
+
+            <button
+                type="submit"
+                class="shorten-btn"
+            >
+                Shorten
+            </button>
+
+        </form>
+
+        {% if short_url %}
+
+        <div class="result">
+
+            <h3>Your shortened URL</h3>
+
+            <div class="url-container">
+
+                <input
+                    type="text"
+                    id="shortUrl"
+                    value="{{ short_url }}"
+                    readonly
+                >
+
+                <button
+                    class="copy-btn"
+                    onclick="copyUrl()"
+                >
+                    Copy
+                </button>
+
+            </div>
+
+            <a
+                href="{{ short_url }}"
+                target="_blank"
+                class="visit-link"
+            >
+                Visit shortened URL →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+        <p class="footer">
+            Simple • Fast • Easy to share
+        </p>
+
+    </div>
+
+
+    <script>
+
+        function copyUrl() {
+
+            const url = document.getElementById("shortUrl");
+
+            navigator.clipboard.writeText(url.value);
+
+            const button = document.querySelector(".copy-btn");
+
+            button.textContent = "Copied!";
+
+            setTimeout(function() {
+                button.textContent = "Copy";
+            }, 2000);
+        }
+
+    </script>
+
+</body>
+
+</html>
